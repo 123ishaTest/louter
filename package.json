@@ -1,0 +1,41 @@
+{
+  "name": "@123ishatest/louter-test",
+  "version": "0.0.1",
+  "description": "Louter is a Zod based yaml-parser for data-driven games",
+  "homepage": "https://github.com/123ishaTest/louter",
+  "bugs": {
+    "email": "ishadijcks@gmail.com",
+    "url": "https://github.com/123ishaTest/louter/issues"
+  },
+  "author": "Isha",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "release": "npm run build && npx changeset publish",
+    "preview": "vite preview",
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "test": "vitest"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.2",
+    "@changesets/cli": "^2.29.8",
+    "@types/node": "^25.2.3",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.0.18"
+  },
+  "files": [
+    "/dist",
+    "README.md",
+    "package.json"
+  ]
+}
