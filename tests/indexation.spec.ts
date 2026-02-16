@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest';
 import path from 'node:path';
-import * as fs from 'node:fs';
 import { Louter } from '@/louter/Louter.ts';
 import { CurrencySchema } from '@/example/CurrencySchema.ts';
 import { ItemSchema } from '@/example/ItemSchema.ts';
@@ -21,8 +20,6 @@ it('Indexes an schemas', () => {
   const indexation = louter.index();
 
   console.log(indexation);
-
-  fs.writeFileSync('tests/louter.ts', indexation.enumCode);
 
   // Assert
   expect(Object.values(indexation.content)).toHaveLength(0);

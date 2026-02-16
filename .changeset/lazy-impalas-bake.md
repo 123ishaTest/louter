@@ -1,5 +1,5 @@
 ---
-'@123ishatest/louter-test2': patch
+'@123ishatest/louter-test': patch
 ---
 
 Attempt something
