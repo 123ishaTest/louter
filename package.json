@@ -1,6 +1,6 @@
 {
   "name": "@123ishatest/louter-test",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Louter is a Zod based yaml-parser for data-driven games",
   "homepage": "https://github.com/123ishaTest/louter",
   "bugs": {
