@@ -61,6 +61,6 @@ export class LouterVsCodeSettingsWriter implements LouterStage {
     const mergedJsonSchemas = currentJsonSchemas.filter((schema) => !generatedByUrl.has(schema.url));
     settings['json.schemas'] = [...mergedJsonSchemas, ...jsonSchemas];
 
-    writeFileSync(this._settingsPath, `${JSON.stringify(settings, null, '\t')}\n`, 'utf-8');
+    writeFileSync(this._settingsPath, `${JSON.stringify(settings, null, 2)}\n`, 'utf-8');
   }
 }
