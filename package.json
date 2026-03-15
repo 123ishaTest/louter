@@ -2,6 +2,13 @@
   "name": "@123ishatest/louter",
   "private": false,
   "version": "0.2.0",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "url": "https://github.com/123ishaTest/louter"
+  },
   "files": [
     "dist"
   ],
@@ -33,6 +40,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.5",
     "@eslint/js": "^10.0.1",
+    "@types/node": "^25.5.0",
     "@vitest/coverage-v8": "^4.0.6",
     "eslint": "^10.0.3",
     "globals": "^17.4.0",
