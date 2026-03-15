@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@louter/*": ["./src/*"],
+      "@tests/*": ["./tests/*"]
+    },
+    "allowJs": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "target": "ESNext",
+    "verbatimModuleSyntax": false,
+    "isolatedModules": true,
+    "lib": ["esnext", "DOM", "DOM.Iterable"],
+
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "composite": true
+  },
+  "include": ["src", "tests"]
+}
