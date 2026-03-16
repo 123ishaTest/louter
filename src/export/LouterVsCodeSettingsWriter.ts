@@ -1,24 +1,9 @@
 import { LouterContext } from '@louter/core/LouterContext';
 import { LouterStage } from '@louter/core/LouterStage';
 import { KindDefinitions } from '@louter/core/types';
+import { isJsonSchemaEntry, isObject } from '@louter/util/type';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
-
-function isObject(value: unknown): value is Record<string, unknown> {
-  return value !== null && typeof value === 'object' && !Array.isArray(value);
-}
-
-function isJsonSchemaEntry(value: unknown): value is { fileMatch: string[]; url: string } {
-  if (!isObject(value)) {
-    return false;
-  }
-
-  return (
-    typeof value.url === 'string' &&
-    Array.isArray(value.fileMatch) &&
-    value.fileMatch.every((match) => typeof match === 'string')
-  );
-}
 
 export class LouterVsCodeSettingsWriter implements LouterStage {
   private readonly _settingsPath: string;
