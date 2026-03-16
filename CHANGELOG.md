@@ -1,5 +1,11 @@
 # @123ishatest/louter
 
+## 0.3.1
+
+### Patch Changes
+
+- Fix missing export
+
 ## 0.3.0
 
 ### Minor Changes

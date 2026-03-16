@@ -8,3 +8,4 @@ export { LouterFileLoader } from '@louter/loader/LouterFileLoader';
  */
 export { LouterContentWriter } from '@louter/export/LouterContentWriter';
 export { LouterJsonSchemaWriter } from '@louter/export/LouterJsonSchemaWriter';
+export { LouterVsCodeSettingsWriter } from '@louter/export/LouterVsCodeSettingsWriter';
