@@ -1,5 +1,11 @@
 # @123ishatest/louter
 
+## 0.3.0
+
+### Minor Changes
+
+- 39cccfe: Add `LouterVsCodeSettingsWriter` to update or create `.vscode/settings.json` with generated JSON schemas
+
 ## 0.2.1
 
 ### Patch Changes
