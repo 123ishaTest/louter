@@ -29,8 +29,8 @@ it('writes yaml and json schema mappings to vscode settings', () => {
   const result = fs.readFileSync('.vscode/settings.json', 'utf-8').toString();
   expect(JSON.parse(result)).toStrictEqual({
     'yaml.schemas': {
-      '.generated/example.schema.json': ['**/*.example.yaml'],
-      '.generated/other.schema.json': ['**/*.other.yaml'],
+      '.generated/example.schema.json': ['**/*.example.y[a]ml'],
+      '.generated/other.schema.json': ['**/*.other.y[a]ml'],
     },
     'json.schemas': [
       {
@@ -74,7 +74,7 @@ it('merges schema mappings with existing vscode settings when schema keys are mi
     'editor.tabSize': 2,
     'files.trimTrailingWhitespace': true,
     'yaml.schemas': {
-      '.generated/example.schema.json': ['**/*.example.yaml'],
+      '.generated/example.schema.json': ['**/*.example.y[a]ml'],
     },
     'json.schemas': [
       {
@@ -93,7 +93,7 @@ it('merges schema mappings with existing yaml.schemas and json.schemas', () => {
     JSON.stringify(
       {
         'yaml.schemas': {
-          '.generated/legacy.schema.json': ['**/*.legacy.yaml'],
+          '.generated/legacy.schema.json': ['**/*.legacy.y[a]ml'],
         },
         'json.schemas': [
           {
@@ -119,8 +119,8 @@ it('merges schema mappings with existing yaml.schemas and json.schemas', () => {
   const result = fs.readFileSync('.vscode/settings.json', 'utf-8').toString();
   expect(JSON.parse(result)).toStrictEqual({
     'yaml.schemas': {
-      '.generated/legacy.schema.json': ['**/*.legacy.yaml'],
-      '.generated/example.schema.json': ['**/*.example.yaml'],
+      '.generated/legacy.schema.json': ['**/*.legacy.y[a]ml'],
+      '.generated/example.schema.json': ['**/*.example.y[a]ml'],
     },
     'json.schemas': [
       {

@@ -1,7 +1,8 @@
 import { LouterContext } from '@louter/core/LouterContext';
 import { LouterStage } from '@louter/core/LouterStage';
 import { KindDefinitions } from '@louter/core/types';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import path from 'node:path';
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -60,6 +61,9 @@ export class LouterVsCodeSettingsWriter implements LouterStage {
     const generatedByUrl = new Map(jsonSchemas.map((schema) => [schema.url, schema]));
     const mergedJsonSchemas = currentJsonSchemas.filter((schema) => !generatedByUrl.has(schema.url));
     settings['json.schemas'] = [...mergedJsonSchemas, ...jsonSchemas];
+
+    const settingsDir = path.dirname(this._settingsPath);
+    mkdirSync(settingsDir, { recursive: true });
 
     writeFileSync(this._settingsPath, `${JSON.stringify(settings, null, 2)}\n`, 'utf-8');
   }
