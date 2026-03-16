@@ -1,11 +1,5 @@
 # @123ishatest/louter
 
-## 0.3.0
-
-### Minor Changes
-
-- 38d814c: added LouterVsCodeSettingsWriter to automatically create schema mappings for yaml and json files
-
 ## 0.2.1
 
 ### Patch Changes
