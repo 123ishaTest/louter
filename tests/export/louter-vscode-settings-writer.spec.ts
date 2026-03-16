@@ -56,7 +56,7 @@ it('merges schema mappings with existing vscode settings when schema keys are mi
         'files.trimTrailingWhitespace': true,
       },
       null,
-      '\t',
+      2,
     ),
   );
 
@@ -103,7 +103,7 @@ it('merges schema mappings with existing yaml.schemas and json.schemas', () => {
         ],
       },
       null,
-      '\t',
+      2,
     ),
   );
 
