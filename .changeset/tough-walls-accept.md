@@ -2,4 +2,4 @@
 '@123ishatest/louter': minor
 ---
 
-added LouterVsCodeSettingsWriter to automatically create schema mappings for yaml and json files
+Add `LouterVsCodeSettingsWriter` to update or create `.vscode/settings.json` with generated JSON schemas
