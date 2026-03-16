@@ -40,7 +40,7 @@ export class LouterVsCodeSettingsWriter implements LouterStage {
     const jsonSchemas: Array<{ fileMatch: string[]; url: string }> = [];
 
     Object.keys(ctx.kinds).forEach((kind) => {
-      yamlSchemas[`.generated/${kind}.schema.json`] = [`**/*.${kind}.yaml`];
+      yamlSchemas[`.generated/${kind}.schema.json`] = [`**/*.${kind}.y[a]ml`];
       jsonSchemas.push({
         fileMatch: [`**/*.${kind}.json`],
         url: `.generated/${kind}.schema.json`,
