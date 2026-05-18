@@ -54,6 +54,14 @@ export class ContentManager<const Kinds extends Record<string, ZodType<{ id: str
     return content;
   }
 
+  public getSchema<Kind extends keyof Kinds>(kind: Kind): Kinds[Kind] {
+    const schema = this._kinds[kind];
+    if (!schema) {
+      throw new ContentKindNotFoundError(`Could not get schema of ${kind.toString()}`);
+    }
+    return schema;
+  }
+
   /**
    * Throw away all currently managed content
    */

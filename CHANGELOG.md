@@ -1,5 +1,11 @@
 # @123ishatest/louter
 
+## 0.4.0
+
+### Minor Changes
+
+- Add getSchema to retrieve schemas by kind
+
 ## 0.3.1
 
 ### Patch Changes
