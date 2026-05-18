@@ -75,3 +75,36 @@ it('throws an error when a piece of content does not exist', () => {
     manager.get('wrong', 'example');
   }).toThrow(ContentNotFoundError);
 });
+
+it('can get schemas', () => {
+  // Arrange
+  const exampleSchema = z.strictObject({
+    id: z.string(),
+    amount: z.number(),
+  });
+  const manager = new ContentManager({
+    example: exampleSchema,
+  });
+
+  // Act
+  const schema = manager.getSchema('example');
+
+  // Assert
+  expect(schema).toBe(exampleSchema);
+});
+
+it('throws an error when a schema does not exist', () => {
+  // Arrange
+  const manager = new ContentManager({
+    example: z.strictObject({
+      id: z.string(),
+      amount: z.number(),
+    }),
+  });
+
+  // Act
+  expect(() => {
+    // @ts-expect-error wrong kind
+    manager.getSchema('wrong');
+  }).toThrow(ContentKindNotFoundError);
+});
