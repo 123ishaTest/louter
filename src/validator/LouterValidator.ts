@@ -96,21 +96,21 @@ export class LouterValidator implements LouterStage {
   }
 
   private validateRecursive<Kinds extends KindDefinitions>(ctx: LouterContext<Kinds>, value: unknown): unknown {
-    // Arrays
     if (Array.isArray(value)) {
       return value.map((entry) => this.validateRecursive(ctx, entry));
     }
 
-    // Objects
     if (value && typeof value === 'object') {
-      return Object.entries(value).reduce((acc, [key, val]) => {
-        const nextKey = this.validateReference(ctx, key);
-        acc[nextKey] = this.validateRecursive(ctx, val);
-        return acc;
-      }, {} as Record<string, unknown>);
+      const result: Record<string, unknown> = {};
+
+      for (const [key, val] of Object.entries(value)) {
+        const newKey = this.validateReference(ctx, key);
+        result[newKey] = this.validateRecursive(ctx, val);
+      }
+
+      return result;
     }
 
-    // Strings
     if (typeof value === 'string') {
       return this.validateReference(ctx, value);
     }
