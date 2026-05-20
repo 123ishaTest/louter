@@ -11,7 +11,7 @@ export type { LouterWarning } from '@louter/core/LouterWarning';
 export { LouterWarningType } from '@louter/core/LouterWarningType';
 export { type KindDefinitions, type Content, type ContentMapFromKinds, ContentSchema } from '@louter/core/types';
 export { createContext } from '@louter/core/util';
-
+export { ref } from '@louter/core/references';
 /**
  * Content
  */
