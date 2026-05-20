@@ -1,5 +1,11 @@
 # @123ishatest/louter
 
+## 0.5.0
+
+### Minor Changes
+
+- 18d405b: Add references to link schemas to each other
+
 ## 0.4.0
 
 ### Minor Changes
