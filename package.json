@@ -1,7 +1,7 @@
 {
   "name": "@123ishatest/louter",
   "private": false,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "publishConfig": {
     "access": "public",
     "provenance": true
@@ -54,6 +54,7 @@
     "vitest": "^4.0.6"
   },
   "dependencies": {
+    "es-toolkit": "^1.46.1",
     "yaml": "^2.8.2",
     "zod": "^4.3.6"
   }
