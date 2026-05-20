@@ -1,10 +1,9 @@
-import { prettifyError } from 'zod';
+import { prettifyError, z } from 'zod';
 import type { KindDefinitions } from '@louter/core/types';
 import type { LouterStage } from '@louter/core/LouterStage';
 import type { LouterContext } from '@louter/core/LouterContext';
 import { LouterWarningType } from '@louter/core/LouterWarningType';
-import { flattenObject } from 'es-toolkit';
-import { LOUTER_REFERENCE_PREFIX, LOUTER_SEPARATOR } from '@louter/core/references';
+import { LOUTER_REFERENCE_MARKER, LOUTER_SEPARATOR } from '@louter/core/references';
 
 /**
  * Validate all LouterObjects through their Zod schemas
@@ -55,42 +54,78 @@ export class LouterValidator implements LouterStage {
         });
         return;
       }
-      // TODO(@Isha): Fix?
-      // @ts-expect-error Fix map already existing
-      ctx.content[object.kind][id] = zodResult.data;
+      ctx.content[object.kind][id] = zodResult.data as z.output<Kinds[string]>;
     });
   }
 
+  /**
+   * Add an error to the context if the reference can not be found
+   * @param ctx
+   * @param reference
+   * @private
+   */
+  private validateReference<Kinds extends KindDefinitions>(ctx: LouterContext<Kinds>, reference: string): string {
+    if (!reference.startsWith(LOUTER_REFERENCE_MARKER)) {
+      return reference;
+    }
+
+    const [, kind, ...rest] = reference.split(LOUTER_SEPARATOR);
+    const refId = rest.join(LOUTER_SEPARATOR);
+
+    if (!ctx.content[kind]) {
+      ctx.warnings.push({
+        type: LouterWarningType.MissingReferenceKind,
+        message: `Missing reference kind '${kind}'`,
+        path: 'TODO',
+      });
+
+      return refId;
+    }
+
+    if (!ctx.content[kind][refId]) {
+      ctx.warnings.push({
+        type: LouterWarningType.MissingReference,
+        message: `Missing reference '${reference}'`,
+        path: 'TODO',
+      });
+
+      return refId;
+    }
+
+    return refId;
+  }
+
+  private validateRecursive<Kinds extends KindDefinitions>(ctx: LouterContext<Kinds>, value: unknown): unknown {
+    // Arrays
+    if (Array.isArray(value)) {
+      return value.map((entry) => this.validateRecursive(ctx, entry));
+    }
+
+    // Objects
+    if (value && typeof value === 'object') {
+      return Object.entries(value).reduce((acc, [key, val]) => {
+        const nextKey = this.validateReference(ctx, key);
+        acc[nextKey] = this.validateRecursive(ctx, val);
+        return acc;
+      }, {} as Record<string, unknown>);
+    }
+
+    // Strings
+    if (typeof value === 'string') {
+      return this.validateReference(ctx, value);
+    }
+
+    return value;
+  }
+
+  /**
+   * Recursively validate all objects and replace reference markers
+   * @param ctx
+   */
   validateReferences<Kinds extends KindDefinitions>(ctx: LouterContext<Kinds>): void {
-    Object.values(ctx.content).forEach((items) => {
-      Object.values(items).forEach((item) => {
-        const flat = flattenObject(item as object);
-
-        Object.entries(flat).forEach(([key, value]) => {
-          if (value.toString().startsWith(LOUTER_REFERENCE_PREFIX)) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [_, kind, ...rest] = value.split(LOUTER_SEPARATOR);
-            const refId = rest.join(LOUTER_SEPARATOR);
-
-            if (!ctx.content[kind]) {
-              ctx.warnings.push({
-                type: LouterWarningType.MissingReferenceKind,
-                message: `Missing reference kind '${kind}'`,
-                path: key,
-              });
-              return;
-            }
-
-            if (!ctx.content[kind][refId]) {
-              ctx.warnings.push({
-                type: LouterWarningType.MissingReference,
-                message: `Missing reference '${value}'`,
-                path: key,
-              });
-              return;
-            }
-          }
-        });
+    Object.entries(ctx.content).forEach(([kind, items]) => {
+      Object.entries(items).forEach(([id, item]) => {
+        ctx.content[kind][id] = this.validateRecursive(ctx, item) as z.output<Kinds[string]>;
       });
     });
   }
