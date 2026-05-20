@@ -19,12 +19,97 @@ it('resolves references', () => {
   });
   const firstPiece = { id: 'a' };
   const secondPiece = { id: 'b', first: 'a' };
-  ctx.content.first = {
-    a: firstPiece,
-  };
-  ctx.content.second = {
-    b: secondPiece,
-  };
+  ctx.objects = [
+    { path: 'a.first.json', kind: 'first', data: firstPiece },
+    { path: 'b.second.json', kind: 'second', data: secondPiece },
+  ];
+
+  // Act
+  parser.run(ctx);
+
+  // Assert
+  expect(ctx.warnings).toStrictEqual([]);
+  expect(ctx.content.first.a).toStrictEqual(firstPiece);
+  expect(ctx.content.second.b).toStrictEqual(secondPiece);
+});
+
+it('resolves nested references', () => {
+  // Arrange
+  const parser = new LouterValidator();
+  const ctx = createContext({
+    first: z.strictObject({
+      id: z.string(),
+    }),
+    second: z.strictObject({
+      id: z.string(),
+      nested: z.strictObject({
+        other: z.number(),
+        first: ref('first'),
+      }),
+    }),
+  });
+  const firstPiece = { id: 'a' };
+  const secondPiece = { id: 'b', nested: { first: 'a', other: 4 } };
+  ctx.objects = [
+    { path: 'a.first.json', kind: 'first', data: firstPiece },
+    { path: 'b.second.json', kind: 'second', data: secondPiece },
+  ];
+
+  // Act
+  parser.run(ctx);
+
+  // Assert
+  expect(ctx.warnings).toStrictEqual([]);
+  expect(ctx.content.first.a).toStrictEqual(firstPiece);
+  expect(ctx.content.second.b).toStrictEqual(secondPiece);
+});
+
+it('resolves references in arrays', () => {
+  // Arrange
+  const parser = new LouterValidator();
+  const ctx = createContext({
+    first: z.strictObject({
+      id: z.string(),
+    }),
+    second: z.strictObject({
+      id: z.string(),
+      array: z.array(ref('first')),
+    }),
+  });
+  const firstPiece = { id: 'a' };
+  const secondPiece = { id: 'b', array: ['a'] };
+  ctx.objects = [
+    { path: 'a.first.json', kind: 'first', data: firstPiece },
+    { path: 'b.second.json', kind: 'second', data: secondPiece },
+  ];
+
+  // Act
+  parser.run(ctx);
+
+  // Assert
+  expect(ctx.warnings).toStrictEqual([]);
+  expect(ctx.content.first.a).toStrictEqual(firstPiece);
+  expect(ctx.content.second.b).toStrictEqual(secondPiece);
+});
+
+it('resolves references as keys', () => {
+  // Arrange
+  const parser = new LouterValidator();
+  const ctx = createContext({
+    first: z.strictObject({
+      id: z.string(),
+    }),
+    second: z.strictObject({
+      id: z.string(),
+      object: z.record(ref('first'), z.number()),
+    }),
+  });
+  const firstPiece = { id: 'a' };
+  const secondPiece = { id: 'b', object: { a: 4 } };
+  ctx.objects = [
+    { path: 'a.first.json', kind: 'first', data: firstPiece },
+    { path: 'b.second.json', kind: 'second', data: secondPiece },
+  ];
 
   // Act
   parser.run(ctx);
@@ -73,6 +158,58 @@ it('fails on incorrect references', () => {
 
   // Act
   validator.run(ctx);
+
+  // Assert
+  expect(ctx.warnings).toHaveLength(1);
+  expect(ctx.warnings[0].type).toBe(LouterWarningType.MissingReference);
+});
+
+it('fails on incorrect key references', () => {
+  // Arrange
+  const validator = new LouterValidator();
+  const ctx = createContext({
+    first: z.strictObject({
+      id: z.string(),
+    }),
+    second: z.strictObject({
+      id: z.string(),
+      object: z.record(ref('first'), z.number()),
+    }),
+  });
+  ctx.objects = [
+    { path: 'a.first.json', kind: 'first', data: { id: 'a' } },
+    { path: 'b.second.json', kind: 'second', data: { id: 'b', object: { wrong: 4 } } },
+  ];
+
+  // Act
+  validator.run(ctx);
+
+  // Assert
+  expect(ctx.warnings).toHaveLength(1);
+  expect(ctx.warnings[0].type).toBe(LouterWarningType.MissingReference);
+});
+
+it('fails on incorrect references in arrays', () => {
+  // Arrange
+  const parser = new LouterValidator();
+  const ctx = createContext({
+    first: z.strictObject({
+      id: z.string(),
+    }),
+    second: z.strictObject({
+      id: z.string(),
+      array: z.array(ref('first')),
+    }),
+  });
+  const firstPiece = { id: 'a' };
+  const secondPiece = { id: 'b', array: ['b'] };
+  ctx.objects = [
+    { path: 'a.first.json', kind: 'first', data: firstPiece },
+    { path: 'b.second.json', kind: 'second', data: secondPiece },
+  ];
+
+  // Act
+  parser.run(ctx);
 
   // Assert
   expect(ctx.warnings).toHaveLength(1);

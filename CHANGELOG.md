@@ -1,5 +1,11 @@
 # @123ishatest/louter
 
+## 0.5.2
+
+### Patch Changes
+
+- Recursively parse references in keys and values
+
 ## 0.5.1
 
 ### Patch Changes
