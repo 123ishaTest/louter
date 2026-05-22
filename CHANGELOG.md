@@ -1,5 +1,11 @@
 # @123ishatest/louter
 
+## 0.5.3
+
+### Patch Changes
+
+- Add getKinds() to ContentManager
+
 ## 0.5.2
 
 ### Patch Changes
