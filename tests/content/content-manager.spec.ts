@@ -108,3 +108,22 @@ it('throws an error when a schema does not exist', () => {
     manager.getSchema('wrong');
   }).toThrow(ContentKindNotFoundError);
 });
+
+it('can get a list of all kinds', () => {
+  // Arrange
+  const manager = new ContentManager({
+    example: z.strictObject({
+      id: z.string(),
+      amount: z.number(),
+    }),
+    other: z.strictObject({
+      id: z.string(),
+    }),
+  });
+
+  // Act
+  const kinds = manager.getKinds();
+
+  // Assert
+  expect(kinds).toStrictEqual(['example', 'other']);
+});

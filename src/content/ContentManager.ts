@@ -25,6 +25,10 @@ export class ContentManager<const Kinds extends Record<string, ZodType<{ id: str
     }
   }
 
+  public getKinds(): (keyof Kinds)[] {
+    return Object.keys(this._kinds);
+  }
+
   public getMap<Kind extends keyof Kinds>(kind: Kind): Record<string, z.infer<Kinds[Kind]>> {
     const map = this._content[kind];
     if (!map) {
