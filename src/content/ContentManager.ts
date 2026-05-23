@@ -66,7 +66,7 @@ export class ContentManager<const Kinds extends Record<string, ZodType<{ id: str
     const kind = this.getKinds().find((kind) => {
       try {
         return this.get(id, kind);
-      } catch (e) {
+      } catch {
         return false;
       }
     });
