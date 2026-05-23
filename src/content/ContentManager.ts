@@ -58,6 +58,24 @@ export class ContentManager<const Kinds extends Record<string, ZodType<{ id: str
     return content;
   }
 
+  /**
+   * Return the specified piece of kind by looking through all types
+   * @param id
+   */
+  public getById(id: string): { id: string } {
+    const kind = this.getKinds().find((kind) => {
+      try {
+        return this.get(id, kind);
+      } catch {
+        return false;
+      }
+    });
+    if (!kind) {
+      throw new ContentNotFoundError(`Could not get content with id '${id}'`);
+    }
+    return this.get(id, kind);
+  }
+
   public getSchema<Kind extends keyof Kinds>(kind: Kind): Kinds[Kind] {
     const schema = this._kinds[kind];
     if (!schema) {

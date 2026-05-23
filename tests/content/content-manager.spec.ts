@@ -127,3 +127,60 @@ it('can get a list of all kinds', () => {
   // Assert
   expect(kinds).toStrictEqual(['example', 'other']);
 });
+
+it('can get by id', () => {
+  // Arrange
+  const exampleA = { id: 'a', amount: 4 };
+  const exampleB = { id: 'b', amount: 4 };
+  const exampleContent = { a: exampleA, b: exampleB };
+
+  const manager = new ContentManager({ example: z.strictObject({ id: z.string(), amount: z.number() }) });
+
+  // Act
+  manager.load({ example: exampleContent });
+
+  // Act
+  const content = manager.getById('b');
+
+  // Assert
+  expect(content).toStrictEqual(exampleB);
+});
+
+it('can get by id when there are multiple kinds', () => {
+  // Arrange
+  const exampleA = { id: 'a', amount: 4 };
+  const exampleB = { id: 'b', amount: 4 };
+
+  const manager = new ContentManager({
+    first: z.strictObject({ id: z.string(), amount: z.number() }),
+    second: z.strictObject({ id: z.string(), amount: z.number() }),
+  });
+
+  // Act
+  manager.loadKind('first', [exampleA]);
+  manager.loadKind('second', [exampleB]);
+
+  // Act
+  const contentA = manager.getById('a');
+  const contentB = manager.getById('b');
+
+  // Assert
+  expect(contentA).toStrictEqual(exampleA);
+  expect(contentB).toStrictEqual(exampleB);
+});
+
+it('throws an error when it cannot find by id', () => {
+  // Arrange
+  const manager = new ContentManager({
+    example: z.strictObject({
+      id: z.string(),
+      amount: z.number(),
+    }),
+  });
+  manager.load({ example: { b: { id: 'b', amount: 4 } } });
+
+  // Act
+  expect(() => {
+    manager.getById('a');
+  }).toThrow(ContentNotFoundError);
+});

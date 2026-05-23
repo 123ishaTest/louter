@@ -1,5 +1,11 @@
 # @123ishatest/louter
 
+## 0.6.0
+
+### Minor Changes
+
+- Add getById to ContentManager
+
 ## 0.5.3
 
 ### Patch Changes
